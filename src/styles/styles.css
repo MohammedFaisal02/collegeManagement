@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+    width: 100%;
+    
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.register-section, .role-selection {
+    margin-top: 20px;
+}
+
+.register-options {
+    display: flex;
+    justify-content: space-around;
+    
+    margin: auto;
+}
+
+.logout{
+    margin-left: 90%;
+    width: auto;
+}
