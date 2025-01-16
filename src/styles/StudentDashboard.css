@@ -9,14 +9,14 @@
 
 /* Sidebar */
 .sidebar {
-  width: 18%;
+  width: 20%;
   background-color: #2c3e50;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border-right: 1px solid #ccc;
   color: #ecf0f1;
+  border-right: 1px solid #ccc;
 }
 
 .sidebar button {
@@ -41,6 +41,8 @@
   padding: 30px;
   background-color: #ecf0f1;
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
 }
 
 /* Tab Content */
@@ -48,29 +50,34 @@
 .attendance-tab,
 .results-tab {
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  width: 400%;
+}
+input:disabled {
+  background-color: #f0f0f0;  /* Light gray background */
+  color: #888;  /* Gray text */
 }
 
 /* Results Section */
 .results-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
 .semester-table {
-  flex: 1;
-  min-width: 350px;
+  width: 100%;
 }
 
 .semester-table table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  background-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 8px;
   overflow: hidden;
   text-align: center;
 }
@@ -100,14 +107,42 @@ button.logout {
   margin-top: 20px;
   background-color: #e74c3c;
   color: white;
-  padding: 10px 15px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
 button.logout:hover {
   background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 25%;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .details-tab,
+  .attendance-tab,
+  .results-tab {
+    padding: 20px;
+  }
+
+  .semester-table table th,
+  .semester-table table td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  button.logout {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
 }

@@ -1,12 +1,11 @@
 const express = require('express');
 const Faculty = require('../models/Faculty');
+const Subject = require('../models/Subject');
+const Student = require('../models/Student');
+const Assessment = require('../models/Assessment');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-const { updateAssessment } = require('../controllers/facultyController'); // Import the controller function
-
-// Route for updating the assessment table
-router.post('/assessment/update', updateAssessment);
 
 
 // Faculty Register Route
@@ -132,5 +131,82 @@ router.get('/subjects', async (req, res) => {
     res.status(500).send({ error: 'Internal server error' });
   }
 });
+
+// Route to fetch students based on branch, section, subjectCode, academicYear, and semester
+router.get('/students', async (req, res) => {
+  const { branch, section, subjectCode, academicYear, semester } = req.query;
+
+  if (!branch || !section || !subjectCode || !academicYear || !semester) {
+    return res.status(400).send({ error: 'Branch, section, subject code, academic year, and semester are required' });
+  }
+
+  try {
+    // Fetch the students who match the filters
+    const studentsWithSubject = await Subject.find({
+      "subjects.subjectCode": subjectCode,
+      "subjects.academicYear": academicYear,
+      semester: parseInt(semester), // Ensure semester is a number
+    });
+    
+    if (!studentsWithSubject.length) {
+      return res.status(404).send({ error: 'No students found with the given filters' });
+    }
+
+    // Now, find the students in your 'Student' collection based on the filtered results
+    const studentRollNos = studentsWithSubject.map((subject) => subject.studentRollNo);
+    
+    const students = await Student.find({
+      rollNumber: { $in: studentRollNos }, // Match roll numbers from the list
+      branch: branch, // Match branch
+      section: section, // Match section
+    });
+    
+    if (!students.length) {
+      return res.status(404).send({ error: 'No students found in the specified branch and section' });
+    }
+
+    res.status(200).json(students);
+  } catch (err) {
+    console.error('Error fetching students:', err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+
+router.post('/add', async (req, res) => {
+  const { branch, section, semester, subjectCode, assessments } = req.body;
+
+  // Validate input
+  if (!branch || !section || !semester || !subjectCode || !assessments || !assessments.length) {
+    return res.status(400).send({ error: 'Branch, section, semester, subjectCode, and assessments are required.' });
+  }
+
+  try {
+    // Prepare assessment data for insertion
+    const assessmentData = assessments.map((item) => ({
+      rollNo: item.rollNo,
+      branch,
+      section,
+      semester,
+      subjectCode,
+      marks: {
+        CAT1: item.CAT1,
+        CAT2: item.CAT2,
+        MODEL: item.MODEL,
+      },
+    }));
+
+    // Insert assessments into the database
+    const result = await Assessment.insertMany(assessmentData);
+
+    res.status(201).send({ message: 'Assessments stored successfully!', result });
+  } catch (err) {
+    console.error('Error saving assessments:', err);
+    res.status(500).send({ error: 'Internal server error.' });
+  }
+});
+
+
+
 
 module.exports = router;

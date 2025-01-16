@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 const studentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   rollNumber: { type: String, required: true, unique: true },
-  dob: {
-    type: Date,
-    required: true,
-  },
+  dob: { type: Date, required: true },
   registerNumber: { type: String, required: true },
   branch: { type: String, required: true },
+  section: { type: String, required: true },
   yearOfEntry: { type: String, required: true },
   fatherName: { type: String, required: true },
   fatherOccupation: { type: String, required: true },
@@ -33,13 +31,6 @@ const studentSchema = new mongoose.Schema({
     thirdYear: { type: String, required: true },
     finalYear: { type: String, required: true },
   },
-  currentSemester: { type: Number, required: true},
-  semesters: [
-    {
-      semester: { type: Number, required: true },
-      subjectCodes: [{ type: String, required: true }], // Only subject codes
-    },
-  ],
 });
 
 const Student = mongoose.model('Student', studentSchema);

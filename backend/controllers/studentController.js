@@ -7,6 +7,7 @@ exports.registerStudent = async (req, res) => {
     dob,
     registerNumber,
     branch,
+    section,
     yearOfEntry,
     fatherName,
     fatherOccupation,
@@ -20,8 +21,6 @@ exports.registerStudent = async (req, res) => {
     mediumOfInstructions,
     marksInPlusTwo,
     counselorNames,
-    currentSemester,
-    semesters // Semesters are coming as a string
   } = req.body;
 
   try {
@@ -33,27 +32,13 @@ exports.registerStudent = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Check if 'semesters' is passed as a string, and try to parse it if necessary
-    let parsedSemesters = [];
-    if (semesters) {
-      if (typeof semesters === 'string') {
-        try {
-          parsedSemesters = JSON.parse(semesters); // Try parsing if it's a string
-        } catch (error) {
-          console.error("Error parsing semesters:", error.message);
-          return res.status(400).json({ message: "Invalid semesters data format" });
-        }
-      } else if (Array.isArray(semesters)) {
-        parsedSemesters = semesters; // If it's already an array, use it directly
-      }
-    }
-
     const newStudent = new Student({
       name,
       rollNumber,
       dob,
       registerNumber,
       branch,
+      section,
       yearOfEntry,
       fatherName,
       fatherOccupation,
@@ -67,8 +52,6 @@ exports.registerStudent = async (req, res) => {
       mediumOfInstructions,
       marksInPlusTwo,
       counselorNames,
-      currentSemester,
-      semesters: parsedSemesters // Ensure semesters is passed as an array
     });
 
     // Save to the database

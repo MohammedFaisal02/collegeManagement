@@ -1,78 +1,147 @@
-/* FacultyDashboard.css */
+/* General Layout */
 .faculty-dashboard {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-  }
-  
-  /* Sidebar */
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 200px; /* Fixed width */
+  background-color: #2c3e50;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevent shrinking of the sidebar */
+}
+
+.sidebar button {
+  background-color: #34495e;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 16px;
+  width: 400%; /* Full-width buttons */
+}
+
+.sidebar button:hover {
+  background-color: #1abc9c;
+}
+
+.sidebar button.active {
+  background-color: #1abc9c;
+  font-weight: bold;
+}
+
+/* Main Content Styling */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ecf0f1;
+  overflow-y: auto;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.details-tab,
+.assessment-tab,
+.change-course-tab {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%; /* Reduced from 100% for better alignment */
+  margin: 0 13px; /* Center align content */
+  overflow: hidden; /* Hide overflowing content */
+  box-sizing: border-box;
+}
+
+select,
+input {
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: auto; /* Ensure inputs don't overflow */
+  box-sizing: border-box;
+}
+
+/* Button Styling */
+button {
+  padding: 8px 12px; /* Reduced padding */
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1abc9c;
+  color: white;
+  cursor: pointer;
+  max-width: 95%; /* Prevent button from overflowing */
+  margin: 10px 0;
+}
+
+button:hover {
+  background-color: #16a085;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Assessment Tab Specific */
+.assessment-tab button {
+  width: auto; /* Ensure button does not stretch unnecessarily */
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .sidebar {
-    width: 250px;
-    background-color: #4CAF50;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    width: 150px; /* Adjust for smaller screens */
   }
-  
+
   .sidebar button {
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border: none;
-    background-color: #66BB6A;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: 14px;
   }
-  
-  .sidebar button:hover {
-    background-color: #43A047;
-  }
-  
-  /* Main Content */
+
   .main-content {
-    flex-grow: 1;
-    background-color: #f4f7f6;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  .details-tab,
-  .assessment-tab {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .details-tab h2,
-  .assessment-tab h2 {
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  table th,
-  table td {
-    border: 1px solid #ddd;
     padding: 10px;
-    text-align: center;
-    margin: auto;
   }
-  
-  table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+
+  .details-tab,
+  .assessment-tab,
+  .change-course-tab {
+    max-width: 100%; /* Allow full width on smaller screens */
   }
-  
-  .student-list {
-    margin-top: 20px;
+
+  select,
+  input {
+    width: 100%; /* Inputs take full width on small screens */
   }
-  
+}

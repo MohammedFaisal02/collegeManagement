@@ -12,6 +12,7 @@ const StudentRegister = () => {
     dob: "",
     registerNumber: "",
     branch: "",
+    section: "",
     yearOfEntry: "",
     fatherName: "",
     fatherOccupation: "",
@@ -36,11 +37,9 @@ const StudentRegister = () => {
       thirdYear: "",
       finalYear: "",
     },
-    currentSemester: "",
-    semesterSubjects: {},
   });
 
- 
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -64,46 +63,15 @@ const StudentRegister = () => {
     }
   };
 
-  const handleAddSubject = (semesterNum) => {
-    setFormData((prevFormData) => {
-      const updatedSemesterSubjects = { ...prevFormData.semesterSubjects };
-      if (!updatedSemesterSubjects[semesterNum]) {
-        updatedSemesterSubjects[semesterNum] = [];
-      }
-      updatedSemesterSubjects[semesterNum].push(""); // Add a new empty subject
-      return { ...prevFormData, semesterSubjects: updatedSemesterSubjects };
-    });
-  };
-
-  const handleSubjectChange = (semesterNum, idx, value) => {
-    setFormData((prevFormData) => {
-      const updatedSemesterSubjects = { ...prevFormData.semesterSubjects };
-      if (!updatedSemesterSubjects[semesterNum]) {
-        updatedSemesterSubjects[semesterNum] = [];
-      }
-      updatedSemesterSubjects[semesterNum][idx] = value;
-      return { ...prevFormData, semesterSubjects: updatedSemesterSubjects };
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
     try {
-      // Process semesterSubjects into semesters array
-      const semesters = Object.keys(formData.semesterSubjects).map((semesterNum) => ({
-        semester: parseInt(semesterNum, 10),
-        subjects: formData.semesterSubjects[semesterNum],
-      }));
-  
-      // Prepare the payload with additional data
-      const payload = { ...formData, semesters };
-      console.log("Submitting payload:", payload);
-      console.log("Payload before submission:", JSON.stringify(payload, null, 2));
+
 
       // Send the registration data to the server
-      const response = await axios.post("http://localhost:5000/api/students/register", payload);
+      const response = await axios.post("http://localhost:5000/api/students/register", formData);
       console.log("Registration successful:", response.data);
-  
+
       // Show success message and navigate to the login page
       alert("Student registered successfully!");
       navigate('/'); // Redirect to the login page
@@ -111,52 +79,6 @@ const StudentRegister = () => {
       console.error("Error during registration:", error);
       alert("Registration failed. Please try again.");
     }
-  };
-  
-  const renderSubjectTables = () => {
-    const semester = parseInt(formData.currentSemester, 10) || 0;
-    if (semester > 8 || semester <= 0) return null;
-
-    return Array.from({ length: semester }, (_, index) => {
-      const semesterNum = index + 1;
-      const subjects = formData.semesterSubjects[semesterNum] || [];
-      return (
-        <div key={`semester-${semesterNum}`} className="semester-table">
-          <h4>Semester {semesterNum}</h4>
-          <table className="subject-table">
-            <thead>
-              <tr>
-                <th>Subject Code</th>
-              </tr>
-            </thead>
-            <tbody>
-              {subjects.map((subject, idx) => (
-                <tr key={`semester-${semesterNum}-row-${idx}`}>
-                  <td>
-                    <input
-                      type="text"
-                      value={subject}
-                      onChange={(e) =>
-                        handleSubjectChange(semesterNum, idx, e.target.value)
-                      }
-                      placeholder={`Subject ${idx + 1}`}
-                      className="subject-input"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button
-            type="button"
-            className="add-subject-button"
-            onClick={() => handleAddSubject(semesterNum)}
-          >
-            Add Subject Code
-          </button>
-        </div>
-      );
-    });
   };
 
   return (
@@ -196,14 +118,54 @@ const StudentRegister = () => {
             placeholder="Register Number"
             className="register-input"
           />
-          <input
-            type="text"
+          <select
             name="branch"
             value={formData.branch}
             onChange={handleChange}
-            placeholder="Branch"
             className="register-input"
-          />
+          >
+            <option value="" disabled>Select Branch</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">MECH</option>
+          </select>
+          <select
+            name="section"
+            value={formData.section}
+            onChange={handleChange}
+            placeholder="Section"
+            className="register-input"
+          >
+            <option value="" disabled>
+              Select Section
+            </option>
+            {formData.branch === "CSE" && (
+              <>
+                <option value="CSE-A">CSE-A</option>
+                <option value="CSE-B">CSE-B</option>
+              </>
+            )}
+            {formData.branch === "ECE" && (
+              <>
+                <option value="ECE-A">ECE-A</option>
+                <option value="ECE-B">ECE-B</option>
+              </>
+            )}
+            {formData.branch === "EEE" && (
+              <>
+                <option value="EEE-A">EEE-A</option>
+                <option value="EEE-B">EEE-B</option>
+              </>
+            )}
+            {formData.branch === "MECH" && (
+              <>
+                <option value="MECH-A">MECH-A</option>
+                <option value="MECH-B">MECH-B</option>
+              </>
+            )}
+          </select>
+
           <input
             type="text"
             name="yearOfEntry"
@@ -365,16 +327,6 @@ const StudentRegister = () => {
             placeholder="Counselor Name (Final Year)"
             className="register-input"
           />
-          {/* Current Semester */}
-          <input
-            type="number"
-            name="currentSemester"
-            value={formData.currentSemester}
-            onChange={handleChange}
-            placeholder="Current Semester"
-            className="register-input"
-          />
-          {renderSubjectTables()}
           <button type="submit" className="submit-button">
             Register
           </button>
