@@ -9,9 +9,16 @@ dotenv.config(); // Load environment variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["https://college-management-backend-lake.vercel.app"]
+    methods: ["POST", "GET"],
+    credentials: true
+  }
+));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
